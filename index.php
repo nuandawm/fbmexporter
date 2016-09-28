@@ -5,7 +5,9 @@
  * Date: 28/09/2016
  * Time: 09:43
  */
-require_once __DIR__ . '/vendor/autoload.php';
+
+echo "Puppa";
+/*require_once __DIR__ . '/vendor/autoload.php';
 
 $fb = new Facebook\Facebook([
   'app_id' => '781751771966575',
@@ -17,4 +19,4 @@ $helper = $fb->getRedirectLoginHelper();
 $permissions = ['email', 'read_mailbox'];
 $loginUrl = $helper->getLoginUrl('http://localhost/fbmessagesexporter/login-callback.php', $permissions);
 
-echo '<a href="' . $loginUrl . '">Log in with Facebook!</a>';
+echo '<a href="' . $loginUrl . '">Log in with Facebook!</a>';*/
