@@ -5,7 +5,7 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"https://www.facebook.com/messages/*"
+				"https://www.facebook.com/*"
 			],
 			"js": [
 				"bower_components/file-saver/FileSaver.min.js",

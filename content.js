@@ -1,19 +1,23 @@
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.action === "getMessages") {
-      /*var counter = 0;
+      var counter = 0;
+      var messagesElem = document.getElementById('webMessengerRecentMessages');
+      if (messagesElem === null)
+        return true;
       var reloadInterval = setInterval(function(){
-        console.log('interval reloaded');
-        if (counter < 3)
-          document.getElementById('webMessengerRecentMessages').parentNode.children[0].children[0].children[0].click();
+        console.log('interval '+counter);
+        if (counter < 200 && messagesElem.parentNode.children[0].className.indexOf('hidden_elem') === -1)
+          messagesElem.parentNode.children[0].children[0].children[0].click();
         else {
+          console.log('interval done!');
           clearInterval(reloadInterval);
-          console.log('interval stopped');*/
-
-          var webMessengerRecentMessages = document.getElementById('webMessengerRecentMessages').outerHTML;
-          sendResponse({messages: webMessengerRecentMessages});
-        /*}
+          var webMessengerRecentMessages = messagesElem.outerHTML;
+          sendResponse({messages: webMessengerRecentMessages, counter: counter});
+        }
         counter += 1;
-      },2000);*/
+      },2000);
+
+      return true;
     }
   });
