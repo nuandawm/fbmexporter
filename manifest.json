@@ -1,0 +1,24 @@
+{
+	"manifest_version": 2,
+	"name": "ExperimentInfo Extension",
+	"version": "0.1",
+	"content_scripts": [
+		{
+			"matches": [
+				"https://www.facebook.com/messages/*"
+			],
+			"js": [
+				"bower_components/file-saver/FileSaver.min.js",
+				"bower_components/jquery/dist/jquery.min.js",
+				"content.js"
+			]
+		}
+	],
+	"browser_action": {
+		"default_icon": "ball1.png",
+		"default_popup": "popup.html"
+	},
+	"permissions": [
+		"cookies"
+	]
+}
