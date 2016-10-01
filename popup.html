@@ -3,12 +3,25 @@
   <head>
     <title>Getting Started Extension's Popup</title>
 
+    <link rel="stylesheet" href="css/popup_style.css" />
+
     <script src="bower_components/file-saver/FileSaver.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
-    <script src="popup.js"></script>
+    <script src="js/popup.js"></script>
   </head>
   <body>
-    <div id="status">Loading messages...</div>
+    <div id="container">
+      <h3>FB messages exporter</h3>
+      <p>
+        Click on the button to start loading the messages
+      </p>
+      <div id="status">
+        <button id="startButt">Start loading!</button>
+      </div>
+      <div class="meter">
+        <span style="width: 0%"></span>
+      </div>
+    </div>
   </body>
 </html>
