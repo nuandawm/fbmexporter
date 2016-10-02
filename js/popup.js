@@ -4,8 +4,15 @@ $(function(){
       chrome.tabs.sendMessage(tabs[0].id, {action: 'popupLog', logMessage: logMessage});
     };
 
+    var humanizeTime = function(seconds){
+      seconds = Math.floor(seconds);
+      return  (seconds>=3600 ? Math.floor(seconds/3600)+'h ' : '') +
+              (seconds>=60 ? (Math.floor(seconds/60)%60)+'m ' : '') +
+              (seconds%60)+'s';
+    };
+
     var keepOnLoading = true;
-    var lastLoadedMessages = 0;
+    var lastRemainingMessages = null;
     var meanLoadedMessages = 0;
 
     $('#startButt').click(function(){
@@ -17,11 +24,29 @@ $(function(){
       var getMessages = function(){
         chrome.tabs.sendMessage(tabs[0].id, {action: 'getMessages'}, function(response) {
           var perc = 100 - 100 * response.remainingMessages / response.remainingMessagesInitial;
-          // TODO calcolare media
-          lastLoadedMessages = response.remainingMessages;
-          //$('#status').html('Still to load: '+response.remainingMessages);
-          $('#status').html('Time remaining: ');
-          $('.meter span').animate({width: perc+'%'},'fast');
+          if (lastRemainingMessages === null) {
+            meanLoadedMessages = response.remainingMessagesInitial - response.remainingMessages;
+          }
+          else {
+            // Calculating mean
+            var loadedMessages = lastRemainingMessages - response.remainingMessages;
+            if (response.counter === 7)
+              loadedMessages = 0;
+            meanLoadedMessages = meanLoadedMessages * (response.counter - 1) / response.counter
+              + (loadedMessages / response.counter);
+            var secondsRemaining = 2 * response.remainingMessages / meanLoadedMessages;
+            if (!isNaN(secondsRemaining))
+              $('#status').html('Time remaining: '+humanizeTime(secondsRemaining));
+          }
+          lastRemainingMessages = response.remainingMessages;
+
+          //$('#status').html('Still to load: '+response.remainingMessages+' '+response.remainingMessagesInitial);
+
+          if (response.messagesLoaded)
+            $('.meter span').animate({width: '100%'},'fast');
+          else
+            $('.meter span').animate({width: perc+'%'},'fast');
+
           if (response.messagesLoaded || !keepOnLoading)
             generatePage(response.messages);
           else

@@ -23,9 +23,8 @@
 
         var messagesLoaded = false;
         var webMessengerRecentMessages = '';
-        var remainingMessages = getRemainingMessages(messagesElem);
         if (counter == 0)
-          remainingMessagesInitial = remainingMessages;
+          remainingMessagesInitial = getRemainingMessages(messagesElem);
 
         if (messagesElem.parentNode.children[0].className.indexOf('hidden_elem') === -1) {
           console.log('loading... '+counter);
@@ -45,7 +44,7 @@
             messages: webMessengerRecentMessages,
             counter: counter,
             remainingMessagesInitial: remainingMessagesInitial,
-            remainingMessages: remainingMessages,
+            remainingMessages: getRemainingMessages(messagesElem),
             messagesLoaded: messagesLoaded
           });
         },2000);
@@ -54,7 +53,7 @@
       }
 
       if (request.action === "popupLog") {
-        console.log(request.logMessage);
+        console.log('Popup log: '+JSON.stringify(request.logMessage));
         return true;
       }
     });
