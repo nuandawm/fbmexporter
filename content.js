@@ -16,13 +16,13 @@
 
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      if (request.action === "getMessages") {
-        var messagesElem = document.getElementById('webMessengerRecentMessages');
+      var messagesElem = document.getElementById('webMessengerRecentMessages');
+
+      if (request.action === "loadMessages") {
         if (messagesElem === null)
           return true;
 
         var messagesLoaded = false;
-        var webMessengerRecentMessages = '';
         if (counter == 0)
           remainingMessagesInitial = getRemainingMessages(messagesElem);
 
@@ -35,13 +35,11 @@
           console.log('loading done!');
           remainingMessagesInitial = 0;
           messagesLoaded = true;
-          webMessengerRecentMessages = messagesElem.innerHTML;
           counter = 0;
         }
 
         setTimeout(function(){
           sendResponse({
-            messages: webMessengerRecentMessages,
             counter: counter,
             remainingMessagesInitial: remainingMessagesInitial,
             remainingMessages: getRemainingMessages(messagesElem),
@@ -49,6 +47,14 @@
           });
         },2000);
 
+        return true;
+      }
+
+      if (request.action === "getMessages") {
+        var webMessengerRecentMessages = messagesElem.innerHTML;
+        sendResponse({
+          messages: webMessengerRecentMessages
+        });
         return true;
       }
 

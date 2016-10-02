@@ -21,8 +21,8 @@ $(function(){
       $('#status').html('Loading messages...');
       keepOnLoading = true;
 
-      var getMessages = function(){
-        chrome.tabs.sendMessage(tabs[0].id, {action: 'getMessages'}, function(response) {
+      var loadMessages = function(){
+        chrome.tabs.sendMessage(tabs[0].id, {action: 'loadMessages'}, function(response) {
           var perc = 100 - 100 * response.remainingMessages / response.remainingMessagesInitial;
           if (lastRemainingMessages === null) {
             meanLoadedMessages = response.remainingMessagesInitial - response.remainingMessages;
@@ -48,25 +48,35 @@ $(function(){
             $('.meter span').animate({width: perc+'%'},'fast');
 
           if (response.messagesLoaded || !keepOnLoading)
-            generatePage(response.messages);
-          else
             getMessages();
+          else
+            loadMessages();
+        });
+      };
+
+      var getMessages = function(){
+        chrome.tabs.sendMessage(tabs[0].id, {action: 'getMessages'}, function(response) {
+          generatePage(response.messages);
         });
       };
 
       var generatePage = function(messages){
-        var htmlCode = '<html><head lang="it"><meta charset="UTF-8"></head><body><ul>';
-        htmlCode += messages;
-        htmlCode += '</ul></body></html>';
-        var aFileParts = [htmlCode];
-        var oMyBlob = new Blob(aFileParts, {type : 'text/html'});
-        saveAs(oMyBlob, 'fbmessages.html');
+        $.get('../css/fbm_style.css', function(data){
+          var htmlCode = '<html><head lang="it"><meta charset="UTF-8">';
+          htmlCode += '<style>'+data+'</style>';
+          htmlCode += '</head><body><ul>';
+          htmlCode += messages;
+          htmlCode += '</ul></body></html>';
+          var aFileParts = [htmlCode];
+          var oMyBlob = new Blob(aFileParts, {type : 'text/html'});
+          saveAs(oMyBlob, 'fbmessages.html');
 
-        $('#stopButt').hide();
-        $('#startButt').show();
+          $('#stopButt').hide();
+          $('#startButt').show();
+        });
       };
 
-      getMessages();
+      loadMessages();
     });
 
     $('#stopButt').click(function(){
