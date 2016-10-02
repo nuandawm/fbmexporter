@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"name": "ExperimentInfo Extension",
+	"name": "FB Messages exporter",
 	"version": "0.1",
 	"content_scripts": [
 		{
@@ -10,7 +10,8 @@
 			"js": [
 				"bower_components/file-saver/FileSaver.min.js",
 				"bower_components/jquery/dist/jquery.min.js",
-				"content.js"
+				"js/content.js",
+				"js/popup.js"
 			]
 		}
 	],
