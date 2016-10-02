@@ -27,7 +27,7 @@
         if (counter == 0)
           remainingMessagesInitial = remainingMessages;
 
-        if (counter < 200 && messagesElem.parentNode.children[0].className.indexOf('hidden_elem') === -1) {
+        if (messagesElem.parentNode.children[0].className.indexOf('hidden_elem') === -1) {
           console.log('loading... '+counter);
           messagesElem.parentNode.children[0].children[0].children[0].click();
           counter += 1;
