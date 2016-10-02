@@ -37,10 +37,14 @@ body {
     position: static;
 }
 
-#status {
+#statusContainer {
     position: absolute;
     right: 0;
     top: 0;
     padding-right: 20px;
     padding-top: 20px;
+}
+
+#stopButt {
+    display: none;
 }
