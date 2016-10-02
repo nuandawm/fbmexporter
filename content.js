@@ -52,5 +52,10 @@
 
         return true;
       }
+
+      if (request.action === "popupLog") {
+        console.log(request.logMessage);
+        return true;
+      }
     });
 })();

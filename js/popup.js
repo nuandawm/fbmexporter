@@ -1,6 +1,12 @@
 $(function(){
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    var popupLog = function(logMessage){
+      chrome.tabs.sendMessage(tabs[0].id, {action: 'popupLog', logMessage: logMessage});
+    };
+
     var keepOnLoading = true;
+    var lastLoadedMessages = 0;
+    var meanLoadedMessages = 0;
 
     $('#startButt').click(function(){
       $('#startButt').hide();
@@ -11,7 +17,10 @@ $(function(){
       var getMessages = function(){
         chrome.tabs.sendMessage(tabs[0].id, {action: 'getMessages'}, function(response) {
           var perc = 100 - 100 * response.remainingMessages / response.remainingMessagesInitial;
-          $('#status').html('Still to load: '+response.remainingMessages);
+          // TODO calcolare media
+          lastLoadedMessages = response.remainingMessages;
+          //$('#status').html('Still to load: '+response.remainingMessages);
+          $('#status').html('Time remaining: ');
           $('.meter span').animate({width: perc+'%'},'fast');
           if (response.messagesLoaded || !keepOnLoading)
             generatePage(response.messages);
